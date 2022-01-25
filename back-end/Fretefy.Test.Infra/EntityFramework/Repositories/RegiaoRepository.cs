@@ -40,7 +40,7 @@ namespace Fretefy.Test.Infra.EntityFramework.Repositories
     {
       var regiaoBase = _contexto.Set<Regiao>().Where(x => x.Id == regiao.Id).FirstOrDefault();
 
-      if (regiaoBase != null)
+      if (regiaoBase == null)
         return false;
 
       regiaoBase.Nome = regiao.Nome;
