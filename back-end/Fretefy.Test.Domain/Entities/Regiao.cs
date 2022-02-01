@@ -7,7 +7,7 @@ namespace Fretefy.Test.Domain.Entities
 {
   public class Regiao : IEntity
   {
-    public Guid Id { get; set; }
+    public long Id { get; set; }
 
     public string Nome { get; set; }
 

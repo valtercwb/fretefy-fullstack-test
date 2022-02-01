@@ -33,7 +33,7 @@ namespace Fretefy.Test.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        public IActionResult Get(int id)
         {
             var cidades = _cidadeService.Get(id);
             return Ok(cidades);

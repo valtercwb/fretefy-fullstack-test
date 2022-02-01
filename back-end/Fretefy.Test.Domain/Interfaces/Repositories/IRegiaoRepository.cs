@@ -8,7 +8,8 @@ namespace Fretefy.Test.Domain.Interfaces.Repositories
   {
     IQueryable<Regiao> List();
     bool Post(Regiao regiao);
-    Regiao GetById(Guid id);
-    bool Put(Regiao regiao);
+    Regiao GetById(int id);
+    bool Atualizar(Regiao regiao);
+    bool VerificaNomeJaExiste(string nome);
   }
 }

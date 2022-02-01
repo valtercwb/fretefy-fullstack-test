@@ -1,3 +1,4 @@
+using Castle.Core.Logging;
 using Fretefy.Test.Domain.Interfaces;
 using Fretefy.Test.Domain.Interfaces.Repositories;
 using Fretefy.Test.Domain.Interfaces.Services;
@@ -9,6 +10,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Configuration;
 
 namespace Fretefy.Test.WebApi
 {
@@ -19,7 +22,7 @@ namespace Fretefy.Test.WebApi
       services.AddScoped<DbContext, TestDbContext>();
       services.AddDbContext<TestDbContext>((provider, options) =>
       {
-        options.UseSqlite("Data Source=Data\\Test.db");
+        options.UseSqlite("Data Source=Data\\Test.db;");
       });
 
       ConfigureInfraService(services);
@@ -31,14 +34,15 @@ namespace Fretefy.Test.WebApi
 
     private void ConfigureDomainService(IServiceCollection services)
     {
-      services.AddTransient<ICidadeService, CidadeService>();
-      services.AddTransient<IRegiaoService, RegiaoService>();
+      services.AddScoped<ICidadeService, CidadeService>();
+      services.AddScoped<IRegiaoService, RegiaoService>();
     }
 
     private void ConfigureInfraService(IServiceCollection services)
     {
-      services.AddTransient<ICidadeRepository, CidadeRepository>();
-      services.AddTransient<IRegiaoRepository, RegiaoRepository>();
+      services.AddScoped<ICidadeRepository, CidadeRepository>();
+      services.AddScoped<IRegiaoRepository, RegiaoRepository>();
+      services.AddScoped<IRegiaoCidadeRepository, RegiaoCidadeRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -47,7 +51,8 @@ namespace Fretefy.Test.WebApi
       {
         app.UseDeveloperExceptionPage();
       }
-      app.UseCors();
+
+      app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
       app.UseRouting();
 
       app.UseEndpoints(endpoints =>

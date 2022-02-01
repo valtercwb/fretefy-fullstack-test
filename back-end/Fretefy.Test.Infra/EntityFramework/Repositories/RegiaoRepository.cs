@@ -1,7 +1,7 @@
-﻿using Fretefy.Test.Domain.Entities;
+﻿
+using Fretefy.Test.Domain.Entities;
 using Fretefy.Test.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 
 namespace Fretefy.Test.Infra.EntityFramework.Repositories
@@ -15,7 +15,7 @@ namespace Fretefy.Test.Infra.EntityFramework.Repositories
       _contexto = dbContext;
     }
 
-    public Regiao GetById(Guid id)
+    public Regiao GetById(int id)
     {
       return _contexto.Set<Regiao>().Include(x => x.RegiaoCidades)
                                     .ThenInclude(y => y.Cidade).AsQueryable()
@@ -36,8 +36,9 @@ namespace Fretefy.Test.Infra.EntityFramework.Repositories
       return true;
     }
 
-    public bool Put(Regiao regiao)
+    public bool Atualizar(Regiao regiao)
     {
+
       var regiaoBase = _contexto.Set<Regiao>().Where(x => x.Id == regiao.Id).FirstOrDefault();
 
       if (regiaoBase == null)
@@ -45,10 +46,15 @@ namespace Fretefy.Test.Infra.EntityFramework.Repositories
 
       regiaoBase.Nome = regiao.Nome;
       regiaoBase.Status = regiao.Status;
-      regiaoBase.RegiaoCidades = regiao.RegiaoCidades;
 
+      _contexto.Set<Regiao>().Update(regiaoBase);
       _contexto.SaveChanges();
       return true;
+    }
+
+    public bool VerificaNomeJaExiste(string nome)
+    {
+      return _contexto.Set<Regiao>().Where(x => x.Nome.ToLower() == nome.ToLower()).Any();
     }
   }
 }

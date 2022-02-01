@@ -9,14 +9,14 @@ namespace Fretefy.Test.Domain.Entities
 
     }
 
-    public Cidade(string nome, string uf)
+    public Cidade(int id, string nome, string uf)
     {
-      Id = Guid.NewGuid();
+      Id = id;
       Nome = nome;
       UF = uf;
     }
 
-    public Guid Id { get; set; }
+    public long Id { get; set; }
 
     public string Nome { get; set; }
 

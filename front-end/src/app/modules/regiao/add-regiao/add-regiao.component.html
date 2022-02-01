@@ -1,0 +1,35 @@
+<div class="row p-4">
+  <div class="card mb-3 p-4">
+    <div class="card-body">
+      <h3>Cadastrar região</h3>
+      <hr>
+      <div class="col-6">
+        <form [formGroup]="form" (ngSubmit)="cadastrarRegiao(form.value)">
+          <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="nome" name="nome" aria-describedby="nome" formControlName="nome"
+              [ngClass]="{ 'is-invalid': submitted && f.nome.errors }" required>
+            <div *ngIf="submitted && f.nome.errors" class="invalid-feedback">
+              <div *ngIf="f.nome.errors.required">First Name is required</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <app-cidade *ngFor="let cidade of cidades" [regiaoCidade]="regiaoCidade"></app-cidade>
+            <div *ngIf="cidades.length == 1">
+              <button type="button" (click)="addCidade()" class="btn btn-primary" id="btnAdicionarCidade">Adicionar
+                cidade</button></div>
+            <div *ngIf="cidades.length > 1">
+              <button type="button" (click)="addCidade()" class="btn btn-primary"
+                id="btnAdicionarCidade">Adicionar</button>
+              <button type="button" (click)="removerCidade(this)" class="btn btn-primary">Remover cidade</button>
+            </div>
+          </div>
+          <div class="row col-3 pull-right">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>

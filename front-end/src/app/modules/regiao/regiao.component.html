@@ -1,3 +1,36 @@
-<p>
-  regiao works!
-</p>
+<div class="row p-4">
+  <div class="card mb-3 p-4">
+    <div class="card-body">
+      <h4 class="col-6">Regiões</h4>
+      <div class="col-6">
+        <a class="btn btn-primary" routerLink="/regiao/add">Inserir</a>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Região</th>
+            <th scope="col">Status</th>
+            <th scope="col">Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let regiao of listaRegiao">
+            <td>
+              {{regiao.nome}}
+            </td>
+            <td>
+              {{regiao.status}}
+            </td>
+            <td>
+              <a class="btn btn-primary" [routerLink]="['/regiao/add/', regiao.id]">Editar</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

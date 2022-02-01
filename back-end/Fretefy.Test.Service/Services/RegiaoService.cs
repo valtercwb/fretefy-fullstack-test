@@ -2,6 +2,7 @@
 using Fretefy.Test.Domain.Enum;
 using Fretefy.Test.Domain.Interfaces.Repositories;
 using Fretefy.Test.Domain.Interfaces.Services;
+using Fretefy.Test.Domain.Util;
 using System;
 using System.Collections.Generic;
 
@@ -10,13 +11,15 @@ namespace Fretefy.Test.Service.Services
   public class RegiaoService : IRegiaoService
   {
     private readonly IRegiaoRepository _regiaoRepository;
+    private readonly IRegiaoCidadeRepository _regiaoCidadeRepository;
 
-    public RegiaoService(IRegiaoRepository regiaoRepository)
+    public RegiaoService(IRegiaoRepository regiaoRepository, IRegiaoCidadeRepository regiaoCidadeRepository)
     {
       _regiaoRepository = regiaoRepository;
+      _regiaoCidadeRepository = regiaoCidadeRepository;
     }
 
-    public object Get(Guid id)
+    public object Get(int id)
     {
       return _regiaoRepository.GetById(id);
     }
@@ -26,16 +29,46 @@ namespace Fretefy.Test.Service.Services
       return _regiaoRepository.List();
     }
 
-    public object Post(Regiao regiao)
+    public Resposta Inserir(Regiao regiao)
     {
-      regiao.Status = StatusRegiao.Ativo;
-      regiao.Id = Guid.NewGuid();
-      return _regiaoRepository.Post(regiao);
+      bool nomeJaExiste = _regiaoRepository.VerificaNomeJaExiste(regiao.Nome);
+
+      if (nomeJaExiste)
+      {
+        return new Resposta(false, "Já existe uma região com esse nome");
+      }
+
+      try
+      {
+        regiao.Status = StatusRegiao.Ativo;
+
+        _regiaoRepository.Post(regiao);
+
+        return new Resposta(true, string.Empty);
+      }
+      catch (Exception)
+      {
+
+      }
+
+      return new Resposta(true, "Não foi possível concluir a operação");
     }
 
-    public object Put(Regiao regiao)
+    public Resposta Atualizar(Regiao regiao)
     {
-      return _regiaoRepository.Put(regiao);
+      try
+      {
+        _regiaoRepository.Atualizar(regiao);
+
+        _regiaoCidadeRepository.Atualizar(regiao.RegiaoCidades);
+
+        return new Resposta(true, string.Empty);
+      }
+      catch (Exception)
+      {
+      }
+
+      return new Resposta(true, string.Empty);
     }
   }
 }

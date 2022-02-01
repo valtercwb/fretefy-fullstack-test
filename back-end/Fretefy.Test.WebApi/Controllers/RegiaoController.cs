@@ -26,9 +26,9 @@ namespace Fretefy.Test.WebApi.Controllers
     }
 
     [HttpGet("{id}")]
-    public IActionResult Get(Guid id)
+    public IActionResult Get(int id)
     {
-      if (id == null || id == default)
+      if (id == default)
         return BadRequest();
 
       var resultado = _regiaoService.Get(id);
@@ -45,7 +45,7 @@ namespace Fretefy.Test.WebApi.Controllers
       if (regiao == null)
         return BadRequest();
 
-      var resultado = _regiaoService.Post(regiao);
+      var resultado = _regiaoService.Inserir(regiao);
 
       if (resultado == null)
         return BadRequest();
@@ -59,7 +59,7 @@ namespace Fretefy.Test.WebApi.Controllers
       if (regiao == null || regiao.Id == default)
         return BadRequest();
 
-      var resultado = _regiaoService.Put(regiao);
+      var resultado = _regiaoService.Atualizar(regiao);
 
       if (resultado == null)
         return BadRequest();
